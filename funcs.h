@@ -145,6 +145,8 @@ void writeXML (ofstream &file, Shop *shops, Product *products) {
     now.tm_year += 1990;
     now.tm_mon += 1;
     tm open, close;
+    const regex pattern("\\<.*?\\>");
+    string s;
   for (int i = 0; i < shopSize; i++) {
     t = shops[i].getOpen();
     open = *localtime(&t);
@@ -156,8 +158,6 @@ void writeXML (ofstream &file, Shop *shops, Product *products) {
     close.tm_year = now.tm_year;
     close.tm_mon = now.tm_mon;
     close.tm_mday = now.tm_mday;
-    const regex pattern("\\<.*?\\>");
-    string s;
       if (difftime(mktime(&now), mktime(&open)) >= 0 && difftime(mktime(&close), mktime(&now)) > 0) {
       file << "<shop id=\"" << shops[i].getID() << "\">\n";
       file << "\t<name>" << shops[i].getName() << "</name>\n";
@@ -181,7 +181,8 @@ void writeXML (ofstream &file, Shop *shops, Product *products) {
         }
       }
       file << "\t</offers>\n";
+      file << "</shop>\n";
+
      }
-    file << "</shop>\n";
   }
 }
